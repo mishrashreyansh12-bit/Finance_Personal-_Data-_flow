@@ -29,14 +29,22 @@ const { allowRoles } = require("../middleware/roleMiddleware");
 
 // CREATE (Analyst + Admin)
 router.post("/", protect, allowRoles("analyst", "admin"), async (req, res) => {
-  const record = await Record.create(req.body);
-  res.json(record);
+  try {
+    const record = await Record.create(req.body);
+    res.json(record);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // GET (Analyst + Admin)
 router.get("/", protect, allowRoles("analyst", "admin"), async (req, res) => {
-  const records = await Record.find();
-  res.json(records);
+  try {
+    const records = await Record.find();
+    res.json(records);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 module.exports = router;
